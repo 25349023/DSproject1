@@ -87,7 +87,7 @@ ostream& operator<< (ostream &out, const Board &b){
         }
         for (; i < b.cols; i++){
             out << "0";
-        } out << "  " << crow->data_list->size() << std::endl;
+        } out << std::endl;
     }
     return out;
 }
