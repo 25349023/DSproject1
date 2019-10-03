@@ -28,11 +28,17 @@ public:
         return size_;
     }
 
+    Node* get_head(){
+        return head;
+    }
+
     void append(int data);
     void remove(int key);
 
     bool insert(int data);
+    void insert(int a, int b);
     Node* find(int key) const;
+    bool empty_between(int a, int b);
 };
 
 void LinkedList::append(int data){
@@ -44,6 +50,7 @@ void LinkedList::remove(int key){
 }
 
 bool LinkedList::insert(int data){
+    size_++;
     if (head == nullptr){
         head = new Node(data);
         return true;
@@ -69,6 +76,32 @@ bool LinkedList::insert(int data){
     return true;
 }
 
+void LinkedList::insert(int a, int b){
+    size_ += (b - a + 1);
+    if (head == nullptr || head->data > b){
+        Node *old_head = head;
+        head = new Node(a);
+        Node *temp = head;
+        for (int i = a + 1; i <= b; i++, temp = temp->next){
+            temp->next = new Node(i);
+        }
+        temp->next = old_head;
+        return;
+    }
+    Node *prev = nullptr;
+    for (Node *curr = head; ; curr = curr->next){
+        if (curr == nullptr || curr->data > b){
+            Node *temp = prev;
+            for (int i = a; i <= b; i++, temp = temp->next){
+                temp->next = new Node(i);
+            }
+            temp->next = curr;
+            return;
+        }
+        prev = curr;
+    }
+}
+
 Node* LinkedList::find(int key) const {
     for (Node *curr = head; curr != nullptr; curr = curr->next){
         if (curr->data == key){
@@ -78,7 +111,19 @@ Node* LinkedList::find(int key) const {
             return nullptr;
         }
     }
+    return nullptr;
 }
 
+bool LinkedList::empty_between(int a, int b){
+    for (Node *curr = head; curr != nullptr; curr = curr->next){
+        if (a <= curr->data && curr->data <= b){
+            return false;
+        }
+        else if (curr->data > b){
+            return true;
+        }
+    }
+    return true;
+}
 
 #endif
