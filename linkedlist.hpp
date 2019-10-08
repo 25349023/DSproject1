@@ -34,7 +34,6 @@ public:
 
     bool insert(int data);
     void insert(int a, int b);
-    Node* find(int key) const;
     bool empty_between(int a, int b);
 };
 
@@ -90,18 +89,6 @@ void LinkedList::insert(int a, int b){
         }
         prev = curr;
     }
-}
-
-Node* LinkedList::find(int key) const {
-    for (Node *curr = head; curr != nullptr; curr = curr->next){
-        if (curr->data == key){
-            return curr;
-        }
-        else if (curr->data > key){
-            return nullptr;
-        }
-    }
-    return nullptr;
 }
 
 bool LinkedList::empty_between(int a, int b){
