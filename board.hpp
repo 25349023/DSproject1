@@ -59,7 +59,6 @@ public:
         std::cout << "destruct finish: height = " << height << std::endl;
     }
 
-    void process_tetromino(string type, int ref_pt);
     void place_tetromino(string type, int ref_pt);
     bool validate_input(string type, int pt);
     void check_clear();
@@ -139,7 +138,6 @@ void Board::clear_row(RowNode *r){
 
 
 void Board::place_tetromino(string type, int ref_pt){
-    using std::cout;
     if (list_ == nullptr){
         list_ = new RowNode;
         height = 1;
@@ -374,16 +372,6 @@ void Board::place_tetromino(string type, int ref_pt){
         ins_row = ins_row->up;
         put_squares_on(&ins_row, ref_pt, ref_pt + 1);
     }
-}
-
-
-void Board::process_tetromino(string type, int ref_pt){
-    if (list_ == nullptr){
-        place_tetromino(type, ref_pt);
-        
-    }
-
-
 }
 
 void Board::check_clear(){

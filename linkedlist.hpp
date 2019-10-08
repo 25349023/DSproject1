@@ -32,22 +32,12 @@ public:
         return head;
     }
 
-    void append(int data);
-    void remove(int key);
-
     bool insert(int data);
     void insert(int a, int b);
     Node* find(int key) const;
     bool empty_between(int a, int b);
 };
 
-void LinkedList::append(int data){
-
-}
-
-void LinkedList::remove(int key){
-
-}
 
 bool LinkedList::insert(int data){
     size_++;
