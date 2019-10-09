@@ -33,7 +33,8 @@ struct RowNode {
     LinkedList *data_list;
     RowNode *up, *down;
 
-    RowNode(RowNode *down = nullptr): data_list(new LinkedList), up(nullptr), down(down) {}
+    RowNode(bool inb, RowNode *down = nullptr):
+            data_list(new LinkedList(inb)), up(nullptr), down(down) {}
     ~RowNode(){
         delete data_list;
     }
@@ -41,7 +42,7 @@ struct RowNode {
 
 class Board {
     int rows, cols, height;
-    RowNode *list_;
+    RowNode *list_, *last_;
 
     RowNode* push_row();
     RowNode* insert_row_on(RowNode *base);
@@ -75,7 +76,8 @@ ostream& operator<< (ostream &out, const Board &b){
             out << "0";
         } out << std::endl;
     }
-    for (RowNode *crow = b.list_; crow != nullptr; crow = crow->down){
+    int h = b.height;
+    for (RowNode *crow = b.list_; crow != nullptr; crow = crow->down, h--){
         int i = 0;
         for (Node *curr = crow->data_list->get_head(); curr != nullptr; curr = curr->next){
             for (; i < curr->data; i++){
@@ -86,14 +88,18 @@ ostream& operator<< (ostream &out, const Board &b){
         }
         for (; i < b.cols; i++){
             out << "0";
-        } out << std::endl;
+        }
+        if (h > b.rows){
+            std::cout << " e";
+        } 
+        out << std::endl;
     }
     return out;
 }
 
 
 RowNode* Board::push_row(){
-    RowNode *temp = new RowNode(list_);
+    RowNode *temp = new RowNode(height < rows, list_);
     list_->up = temp;
     list_ = temp;
     height++;
@@ -101,7 +107,7 @@ RowNode* Board::push_row(){
 }
 
 RowNode* Board::insert_row_on(RowNode *base){
-    RowNode *temp = new RowNode(base);
+    RowNode *temp = new RowNode(height < rows, base);
     base->up = temp;
     height++;
     return temp;
@@ -123,6 +129,13 @@ void Board::put_squares_on(RowNode **r, int a, int b){
 
 void Board::clear_row(RowNode *r){
     std::cout << "clear one row" << std::endl;
+    if (height > rows){
+        int diff = height - rows;
+        RowNode *curr = list_;
+        for (int i = 1; i < diff; i++, curr = curr->down);
+        curr->data_list->in_board = true;
+    }
+
     if (r->up != nullptr){
         r->up->down = r->down;
     }
@@ -132,6 +145,9 @@ void Board::clear_row(RowNode *r){
     if (list_ == r){
         list_ = r->down;
     }
+    if (last_ == r){
+        last_ = r->up;
+    }
     height--;
     delete r;
 }
@@ -139,7 +155,8 @@ void Board::clear_row(RowNode *r){
 
 void Board::place_tetromino(string type, int ref_pt){
     if (list_ == nullptr){
-        list_ = new RowNode;
+        list_ = new RowNode(height < rows);
+        last_ = list_;
         height = 1;
     }
     
@@ -376,10 +393,10 @@ void Board::place_tetromino(string type, int ref_pt){
 
 void Board::check_clear(){
     // TODO: check if any row should be cleared
-    for (RowNode *curr = list_; curr != nullptr; ){
+    for (RowNode *curr = last_; curr != nullptr; ){
         RowNode *temp = curr;
-        curr = curr->down;
-        if (temp->data_list->size() == cols){
+        curr = curr->up;
+        if (temp->data_list->size() == cols && temp->data_list->in_board){
             clear_row(temp);
         }
     }
@@ -390,6 +407,7 @@ bool Board::check_gameover(){
 }
 
 void Board::clear_exceed_rows(){
+    std::cout << "clear exceeded" << std::endl;
     if (height <= rows) {
         return;
     }

@@ -9,12 +9,17 @@ struct Node {
     Node(int d, Node *n = nullptr): data(d), next(n) {}
 };
 
+class Board;
+
 class LinkedList {
+    friend Board;
+
     int size_;
     Node *head;
+    bool in_board;
 
 public:
-    LinkedList(): size_(0), head(nullptr) {}
+    LinkedList(bool inb = false): size_(0), head(nullptr), in_board(inb) {}
 
     ~LinkedList(){
         for (Node *curr = head; curr != nullptr;){

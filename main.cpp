@@ -16,7 +16,7 @@ int main(){
 
     fin >> rows >> cols;
     Board board(rows, cols);
-    cout << board;
+    cout << board << endl;
     string currentShape;
     while (fin >> currentShape){
         if (currentShape == "End"){
