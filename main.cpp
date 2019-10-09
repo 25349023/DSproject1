@@ -1,58 +1,51 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+
+#include "board.hpp"
 
 using namespace std;
 
-class Board {
-    int rows, cols;
-
-
-    void clear_row(int);
-public:
-    Board(int r = 0, int c = 0): rows(r), cols(c) {
-        // TODO: initialize linked list or stack
-    }
-
-    void place_tetromino(string, int);
-    void check_clear();
-    bool check_gameover();
-};
-
-void Board::place_tetromino(string kind, int ref_pt){
-    
-}
-
-void Board::check_clear(){
-    // TODO: check if any row should be cleared
-
-    
-}
-
-bool Board::check_gameover(){
-    
-}
-
 int main(){
     int rows, cols;
-    cin >> rows >> cols;
-    Board board(rows, cols);
+    ifstream fin("tetris.data");
+    if (!fin){
+        cerr << "failed to open tetris.data for reading" << endl;
+        return 1;
+    }
 
+    fin >> rows >> cols;
+    Board board(rows, cols);
     string currentShape;
-    while (cin >> currentShape){
+    while (fin >> currentShape){
         if (currentShape == "End"){
             break;
         }
+
         int ref_point;
-        cin >> ref_point;
-
-        board.place_tetromino(currentShape, ref_point);
-
-        if (board.check_gameover()){
+        fin >> ref_point;
+        ref_point -= 1;
+        if (!board.validate_input(currentShape, ref_point)){
+            cerr << "Input invalid." << endl;
             break;
         }
-        
+
+        board.place_tetromino(currentShape, ref_point);
         board.check_clear();
+
+        if (board.check_gameover()){
+            board.clear_exceed_rows();
+            break;
+        }
     }
+    fin.close();
+    
+    ofstream fout("tetris.final");
+    if (!fout){
+        cerr << "failed to open tetris.final for writing" << endl;
+    }
+    fout << board;
+    fout.close();
 
     return 0;
 }
