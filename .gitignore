@@ -1,5 +1,5 @@
 .vscode/
 *.exe
 *.o
-tetris.data
+*.data
 tetris.final
