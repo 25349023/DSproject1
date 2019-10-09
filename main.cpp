@@ -16,7 +16,6 @@ int main(){
 
     fin >> rows >> cols;
     Board board(rows, cols);
-    cout << board << endl;
     string currentShape;
     while (fin >> currentShape){
         if (currentShape == "End"){
@@ -34,17 +33,13 @@ int main(){
         board.place_tetromino(currentShape, ref_point);
         board.check_clear();
 
-        cout << board << endl;
         if (board.check_gameover()){
             board.clear_exceed_rows();
-            cout << "game over" << endl;
             break;
         }
     }
     fin.close();
     
-    cout << board << endl;
-
     ofstream fout("tetris.final");
     if (!fout){
         cerr << "failed to open tetris.final for writing" << endl;

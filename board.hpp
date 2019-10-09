@@ -57,7 +57,6 @@ public:
         while (list_ != nullptr){
             clear_row(list_);
         }
-        std::cout << "destruct finish: height = " << height << std::endl;
     }
 
     void place_tetromino(string type, int ref_pt);
@@ -88,11 +87,7 @@ ostream& operator<< (ostream &out, const Board &b){
         }
         for (; i < b.cols; i++){
             out << "0";
-        }
-        if (h > b.rows){
-            std::cout << " e";
-        } 
-        out << std::endl;
+        } out << std::endl;
     }
     return out;
 }
@@ -128,7 +123,6 @@ void Board::put_squares_on(RowNode **r, int a, int b){
 }
 
 void Board::clear_row(RowNode *r){
-    std::cout << "clear one row" << std::endl;
     if (height > rows){
         int diff = height - rows;
         RowNode *curr = list_;
@@ -407,7 +401,6 @@ bool Board::check_gameover(){
 }
 
 void Board::clear_exceed_rows(){
-    std::cout << "clear exceeded" << std::endl;
     if (height <= rows) {
         return;
     }
