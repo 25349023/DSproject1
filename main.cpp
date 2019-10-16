@@ -8,7 +8,7 @@ using namespace std;
 
 int main(){
     int rows, cols;
-    ifstream fin("tetris.data");
+    ifstream fin("Tetris.data");
     if (!fin){
         cerr << "failed to open tetris.data for reading" << endl;
         return 1;
@@ -40,7 +40,7 @@ int main(){
     }
     fin.close();
     
-    ofstream fout("tetris.final");
+    ofstream fout("Tetris.final");
     if (!fout){
         cerr << "failed to open tetris.final for writing" << endl;
     }
