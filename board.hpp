@@ -45,7 +45,6 @@ class Board {
     RowNode *list_, *last_;
 
     RowNode* push_row();
-    RowNode* insert_row_on(RowNode *base);
     void put_squares_on(RowNode **r, int a);
     void put_squares_on(RowNode **r, int a, int b);
     void clear_row(RowNode *r);
@@ -97,13 +96,6 @@ RowNode* Board::push_row(){
     RowNode *temp = new RowNode(height < rows, list_);
     list_->up = temp;
     list_ = temp;
-    height++;
-    return temp;
-}
-
-RowNode* Board::insert_row_on(RowNode *base){
-    RowNode *temp = new RowNode(height < rows, base);
-    base->up = temp;
     height++;
     return temp;
 }
@@ -386,7 +378,6 @@ void Board::place_tetromino(string type, int ref_pt){
 }
 
 void Board::check_clear(){
-    // TODO: check if any row should be cleared
     for (RowNode *curr = last_; curr != nullptr; ){
         RowNode *temp = curr;
         curr = curr->up;
