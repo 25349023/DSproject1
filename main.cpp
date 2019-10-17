@@ -43,6 +43,7 @@ int main(){
     ofstream fout("Tetris.final");
     if (!fout){
         cerr << "failed to open tetris.final for writing" << endl;
+        return 1;
     }
     fout << board;
     fout.close();
