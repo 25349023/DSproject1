@@ -37,23 +37,20 @@ public:
         return head;
     }
 
-    bool insert(int data);
+    void insert(int data);
     void insert(int a, int b);
     bool empty_between(int a, int b);
 };
 
 
-bool LinkedList::insert(int data){
+void LinkedList::insert(int data){
     size_++;
     if (head == nullptr){
         head = new Node(data);
-        return true;
+        return;
     }
     Node *prev = nullptr;
     for (Node *curr = head; curr != nullptr; curr = curr->next){
-        if (curr->data == data){
-            return false;
-        }
         if (curr->data > data){
             Node *temp = new Node(data, curr);
             if (prev != nullptr){
@@ -62,12 +59,11 @@ bool LinkedList::insert(int data){
             else {
                 head = temp;
             }
-            return true;
+            return;
         }
         prev = curr;
     }
     prev->next = new Node(data);
-    return true;
 }
 
 void LinkedList::insert(int a, int b){
